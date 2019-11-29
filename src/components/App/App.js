@@ -1,22 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from 'prop-types';
-import Logo from './Logo.js';
+import React, { useState } from 'react';
 import Capitalization from '../Capitalization/Capitalization.js';
+import Navigation from '../Navigation/Navigation.js';
+import Logo from './Logo.js';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      capitalization: '240 882 812 345'.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')
-    }
-  }
+import './style/App.scss';
 
-  render() {
-    return [
-      <Logo />,
-      <Capitalization value={this.state.capitalization} />
-    ];
-  }
+export default function App() {
+  const [capitalization, setCapitalization] = useState(0);
+
+  return (
+    <div className="app">
+      <Logo key="Logo" />
+      <Capitalization key="Cap" value={capitalization} />
+      <Navigation key="Nav" />
+    </div>
+  );
 }
-
-export default App;
