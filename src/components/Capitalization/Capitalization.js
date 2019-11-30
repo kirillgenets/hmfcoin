@@ -1,25 +1,29 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import { prettifyPrice } from '../../functions.js';
 import './style/Capitalization.scss';
 
-class Capitalization extends Component {
-  static propTypes = {
-    value: PropTypes.number.isRequired
+const GLOBAL_DATA_URL = 'https://api.coinmarketcap.com/v2/global/';
+
+function Capitalization() {
+  const [capitalization, setCapitalization] = useState(0);
+  
+  useEffect(() => {
+    fetchCapData();
+  });
+
+  async function fetchCapData() {
+    const response = await fetch(GLOBAL_DATA_URL);
+    const json = await response.json();
+
+    setCapitalization(json.data.quotes.USD.total_market_cap);
   }
 
-  constructor(props) {
-    super(props);
-    this.value = props.value.toString().replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ');
-  }
-
-  render() {
-    return (
-      <div className='capitalization'>
-        <h2 className='capitalization-title'>Total market cap:</h2>
-        <p className='capitalization-value'>${this.value}</p>
-      </div>
-    );
-  }
+  return (
+    <div className='capitalization'>
+      <h2 className='capitalization-title'>Total market cap:</h2>
+      <p className='capitalization-value'>${prettifyPrice(capitalization)}</p>
+    </div>
+  );
 }
 
 export default Capitalization;
