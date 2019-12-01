@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import './style/NavItem.scss';
 
 export default function NavItem(props) {
-  const className = `nav-item nav-item-${props.type}`;
+  function handleClick(evt) {
+    evt.preventDefault();
+
+    props.onClick(props.value);
+  }
 
   return (
-    <li className={className}>
+    <li className="nav-item">
       <a href="#">{props.text}</a>
     </li>
   );
 }
 
 NavItem.propTypes = {
-  type: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired
 }

@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import Cryptocurrency from './Cryptocurrency.js';
+import { CRYPTOCURRENCIES_DATA_URL } from '../../links.js';
+import { fetchData } from '../../functions.js';
 import './style/CryptoTable.scss';
 
-const CRYPTOCURRENCIES_DATA_URL = 'https://api.coinmarketcap.com/v2/ticker/';
-
-export default function CryptoTable() {
-  const [viewType, setViewType] = useState('top-100');
+export default function CryptoTable(props) {
   const [cryptocurrencies, setCryptocurrencies] = useState([]);
 
   useEffect(() => {
-    fetchCryptocurrencies();
+    fetchData(CRYPTOCURRENCIES_DATA_URL, fetchCryptocurrencies);
   });
 
-  async function fetchCryptocurrencies() {
-    const response = await fetch(CRYPTOCURRENCIES_DATA_URL);
-    const json = await response.json();
-
-    console.log(sortCryptocurrencies(Object.values(json.data)));
+  function fetchCryptocurrencies(result) {
+    const sorted = sortCryptocurrencies(Object.values(result.data));
+    setCryptocurrencies(sorted);
+    props.addCryptocurrencies(cryptocurrencies);
   }
 
   function sortCryptocurrencies(arr) {
@@ -24,7 +23,19 @@ export default function CryptoTable() {
 
   return (
     <table className="crypto-table">
-
+      <tbody>
+        {cryptocurrencies.map((data, index) => (
+          <Cryptocurrency
+            id={index + 1}
+            name={data.name}
+            cap={data.quotes.USD.market_cap}
+            price={data.quotes.USD.price}
+            volume={data.quotes.USD.volume_24h}
+            supply={data.circulating_supply}
+            change={data.quotes.USD.percent_change_24h}
+          />
+        ))}
+      </tbody>
     </table>
   );
 }

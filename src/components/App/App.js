@@ -1,18 +1,17 @@
 import React from 'react';
-import Capitalization from '../Capitalization/Capitalization.js';
-import Navigation from '../Navigation/Navigation.js';
 import Logo from './Logo.js';
-import CryptoTable from '../CryptoTable/CryptoTable.js';
-
 import './style/App.scss';
+import NavigationContainer from '../../containers/NavigationContainer.js';
+import CapitalizationContainer from '../../containers/CapitalizationContainer.js';
+import CryptoTableContainer from '../../containers/CryptoTableContainer.js';
 
 export default function App() {
   return (
     <div className="app">
       <Logo />
-      <Capitalization />
-      <Navigation />
-      <CryptoTable />
+      <CapitalizationContainer />
+      <NavigationContainer />
+      <CryptoTableContainer />
     </div>
   );
 }
